@@ -136,16 +136,24 @@
      <height>18</height>
     </rect>
    </property>
-   <widget class="QMenu" name="menu">
+   <widget class="QMenu" name="menu_database">
     <property name="title">
      <string>&amp;База данных</string>
     </property>
-    <addaction name="action"/>
-    <addaction name="action_2"/>
-    <addaction name="action_3"/>
-    <addaction name="action_4"/>
+    <addaction name="Connect_to_database"/>
+    <addaction name="Merge_database"/>
+    <addaction name="Import"/>
+    <addaction name="Export"/>
    </widget>
-   <addaction name="menu"/>
+   <widget class="QMenu" name="menu_database_search">
+    <property name="title">
+     <string>Поиск</string>
+    </property>
+    <addaction name="Search_in_database"/>
+    <addaction name="Filter"/>
+   </widget>
+   <addaction name="menu_database"/>
+   <addaction name="menu_database_search"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -157,24 +165,34 @@
    <addaction name="separator"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="action">
+  <action name="Connect_to_database">
    <property name="text">
     <string>Связать БД</string>
    </property>
   </action>
-  <action name="action_2">
+  <action name="Merge_database">
    <property name="text">
     <string>Слияние БД</string>
    </property>
   </action>
-  <action name="action_3">
+  <action name="Import">
    <property name="text">
     <string>Импорт</string>
    </property>
   </action>
-  <action name="action_4">
+  <action name="Export">
    <property name="text">
     <string>Экспорт</string>
+   </property>
+  </action>
+  <action name="Search_in_database">
+   <property name="text">
+    <string>Поиск по БД</string>
+   </property>
+  </action>
+  <action name="Filter">
+   <property name="text">
+    <string>Фильтр</string>
    </property>
   </action>
  </widget>

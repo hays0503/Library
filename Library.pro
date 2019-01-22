@@ -31,16 +31,21 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     database.cpp \
-    editform.cpp
+    editform.cpp \
+    dialogsearch.cpp \
+    queryfactory.cpp
 
 HEADERS += \
         mainwindow.h \
     database.h \
-    editform.h
+    editform.h \
+    dialogsearch.h \
+    queryfactory.h
 
 FORMS += \
         mainwindow.ui \
-    editform.ui
+    editform.ui \
+    dialogsearch.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

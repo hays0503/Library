@@ -13,6 +13,7 @@
 #include <QSqlTableModel>
 #include <QtWidgets>
 #include <QStandardItemModel>
+#include <QCompleter>
 
 class CountAndValue
 {
@@ -52,7 +53,7 @@ public:
     bool setTable(QTableView *tableView, QString TableName);
     /*Иницализация Таблицы бд c помощью SQL запроса*/
     bool setTableQuery(QTableView *tableView, QString TableName, QString NameProduct);
-    bool setTableQuery(QTableView *tableView);
+    bool setTableQuery(QTableView *tableView, QString Query);
     /*Заполнение элементов*/
     void setItemInBase(QVariant nameTable, QVariant item, QVariant cost, QVariant count, QDate date,QVariant Client);
     void setItemInTable(QStandardItemModel *table, QString Item,qint32 Row,qint32 Column);
@@ -80,8 +81,11 @@ public:
     void SetCountAndValueFinalItems(QTableView *table,QStandardItemModel *model, qint32 Row,qint32 Column);
 
 
+    /*Запрос данных из БД*/
+    QSqlQueryModel *getQueryData(QString Query);
 
 
+    bool setCompleter(QCompleter *completer, QString Query);
 
 
     CountAndValue CountAndValueItems(QAbstractItemModel *tableView, QString ItemsName, QString ItemTable);
