@@ -31,6 +31,11 @@ private:
     Ui::DialogSearch *ui;
     QCompleter *completer_genre;
     QCompleter *completer_author;
+    QCompleter *completer_ISBN;
+    QCompleter *completer_publisher;
+    QCompleter *completer_udc;
+    QCompleter *completer_bbk;
+    QCompleter *completer_release_date_book;
 
     void InitSearchList(DataBase *p_connect);
 };

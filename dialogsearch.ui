@@ -32,8 +32,8 @@
   <widget class="QComboBox" name="comboBox_genre">
    <property name="geometry">
     <rect>
-     <x>120</x>
-     <y>30</y>
+     <x>140</x>
+     <y>130</y>
      <width>151</width>
      <height>22</height>
     </rect>
@@ -42,9 +42,9 @@
   <widget class="QLabel" name="label_genre">
    <property name="geometry">
     <rect>
-     <x>30</x>
-     <y>20</y>
-     <width>91</width>
+     <x>20</x>
+     <y>120</y>
+     <width>111</width>
      <height>41</height>
     </rect>
    </property>
@@ -56,7 +56,7 @@
    <property name="geometry">
     <rect>
      <x>420</x>
-     <y>30</y>
+     <y>130</y>
      <width>151</width>
      <height>22</height>
     </rect>
@@ -65,14 +65,161 @@
   <widget class="QLabel" name="label_author">
    <property name="geometry">
     <rect>
-     <x>320</x>
-     <y>20</y>
+     <x>310</x>
+     <y>120</y>
      <width>101</width>
      <height>41</height>
     </rect>
    </property>
    <property name="text">
     <string>Поиск по авторам</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_publisher">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>180</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Поиск по издателям</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_publisher">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>190</y>
+     <width>151</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_ISBN">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>190</y>
+     <width>151</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_isbn">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>180</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Поиск по ISBN</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_udc">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>240</y>
+     <width>151</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_bbk">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>230</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Поиск по ББК</string>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="comboBox_bbk">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>240</y>
+     <width>151</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_udc">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>230</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Поиск по УДК</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="name_book">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>50</y>
+     <width>121</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Поиск по имени книги</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="line_name_book">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>50</y>
+     <width>431</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_release_date_book">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>80</y>
+     <width>111</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Поиск по годам</string>
+   </property>
+  </widget>
+  <widget class="QSpinBox" name="spinBox_release_date_book">
+   <property name="geometry">
+    <rect>
+     <x>140</x>
+     <y>90</y>
+     <width>151</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="minimum">
+    <number>1500</number>
+   </property>
+   <property name="maximum">
+    <number>2500</number>
+   </property>
+   <property name="value">
+    <number>2018</number>
    </property>
   </widget>
  </widget>

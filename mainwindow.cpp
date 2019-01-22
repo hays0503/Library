@@ -28,8 +28,11 @@ void MainWindow::slotSelectionChange(const QItemSelection &, const QItemSelectio
 
 void MainWindow::slotChangeTable(QString item)
 {
-    QString query   = QueryFactory::search_by_genre_name_cache(item);
+    QString query   //= QueryFactory::search_by_genre_name_cache(item);
                     //= QueryFactory::search_by_author_name_cache(item);
+                    //= QueryFactory::search_by_book_name_cache(item);
+                    = QueryFactory::search_by_release_date_book(item);
+    qDebug()<<query;
     db->setTableQuery(ui->tableView,query);
 }
 

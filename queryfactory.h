@@ -6,6 +6,8 @@
 */
 
 #include <qstring.h>
+#include <QSqlQuery>
+#include <QVariant>
 
 class QueryFactory
 {
@@ -63,16 +65,21 @@ public:
 
     static QString search_by_author_name_cache(QString author_name){
         QString query =
-        "SELECT * FROM `librarydb`.`cache`\
+        "SELECT * FROM `librarydb`.`cache` \
         WHERE `librarydb`.`cache`.id_books IN (SELECT \
-        librarydb.author_join_table.id_books FROM\
-        librarydb.author_join_table WHERE\
+        librarydb.author_join_table.id_books FROM \
+        librarydb.author_join_table WHERE \
         librarydb.author_join_table.id_author = (SELECT \
-        librarydb.author.id_author FROM librarydb.author\
+        librarydb.author.id_author FROM librarydb.author \
         WHERE librarydb.author.author_record = '%1'));";
         return query.arg(author_name);
     }
 
+    static QString search_by_book_name_cache(QString book_name){
+        QSqlQuery query;
+        query.prepare("SELECT * FROM librarydb.cache WHERE librarydb.cache.name_book like ('%"+book_name+"%');");
+        return query.lastQuery();
+    }
 
     static QString search_by_id_book(qint32 id_book){
       QString query =
@@ -174,6 +181,12 @@ public:
         return query.arg(name_book);
     }
 
+    static QString search_by_release_date_book(QString release_date_book){
+        QString query =
+            "SELECT * FROM librarydb.cache \
+            WHERE librarydb.cache.release_date_book = '%1'";
+        return query.arg(release_date_book);
+    }
     static QString search_by_binding_book(QString name_binding){
         QString query =
         "SELECT `librarydb`.`book_binding_type`.id_book_binding_type \n\
