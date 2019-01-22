@@ -30,7 +30,6 @@ void MainWindow::slotChangeTable(QString item)
 {
     QString query   = QueryFactory::search_by_genre_name_cache(item);
                     //= QueryFactory::search_by_author_name_cache(item);
-    qDebug()<<query;
     db->setTableQuery(ui->tableView,query);
 }
 
