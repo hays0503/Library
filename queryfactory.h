@@ -17,302 +17,341 @@ public:
     static QString show_all(){
       QString query =
     "   SELECT \n\
-                  `librarydb`.`books`.id_books, \n\
-                  `librarydb`.`books`.name_book, \n\
-                  GROUP_CONCAT(DISTINCT `librarydb`.`author`.author_record), \n\
-                  GROUP_CONCAT(DISTINCT `librarydb`.`genre`.genre_record), \n\
-                  `librarydb`.`bbk`.bbk_record, \n\
-                  `librarydb`.`udc`.udc_record, \n\
-                  `librarydb`.`books`.isbn, \n\
-                  `librarydb`.`publisher`.publisher_record, \n\
-                  GROUP_CONCAT(DISTINCT `librarydb`.`book_binding_type`.binding_type), \n\
-                  `librarydb`.`books`.description_record \n\
+                  `books`.id_books, \n\
+                  `books`.name_book, \n\
+                  GROUP_CONCAT(DISTINCT `author`.author_record), \n\
+                  GROUP_CONCAT(DISTINCT `genre`.genre_record), \n\
+                  `bbk`.bbk_record, \n\
+                  `udc`.udc_record, \n\
+                  `books`.isbn, \n\
+                  `publisher`.publisher_record, \n\
+                  GROUP_CONCAT(DISTINCT `book_binding_type`.binding_type), \n\
+                  `books`.description_record \n\
         FROM \n\
-                  `librarydb`.`books` \n\
+                  `books` \n\
                       JOIN \n\
-                  `librarydb`.`author_join_table` ON `librarydb`.`author_join_table`.id_books = `librarydb`.`books`.id_books \n\
+                  `author_join_table` ON `author_join_table`.id_books = `books`.id_books \n\
                       JOIN \n\
-                  `librarydb`.`author` ON `librarydb`.`author`.id_author = `librarydb`.`author_join_table`.id_author \n\
+                  `author` ON `author`.id_author = `author_join_table`.id_author \n\
                       JOIN \n\
-                  `librarydb`.`genre_join_table` ON `librarydb`.`genre_join_table`.id_books = `librarydb`.`books`.id_books \n\
+                  `genre_join_table` ON `genre_join_table`.id_books = `books`.id_books \n\
                       JOIN \n\
-                  `librarydb`.`genre` ON `librarydb`.`genre`.id_genre = `librarydb`.`genre_join_table`.id_genre \n\
+                  `genre` ON `genre`.id_genre = `genre_join_table`.id_genre \n\
                       JOIN    \n\
-                  `librarydb`.`book_binding_type` ON `librarydb`.`book_binding_type`.id_book_binding_type = `librarydb`.`books`.index_book_binding_type \n\
+                  `book_binding_type` ON `book_binding_type`.id_book_binding_type = `books`.index_book_binding_type \n\
                       JOIN \n\
-                  `librarydb`.`publisher` ON `librarydb`.`publisher`.id_publisher = `librarydb`.`books`.index_publisher \n\
+                  `publisher` ON `publisher`.id_publisher = `books`.index_publisher \n\
                       JOIN \n\
-                  `librarydb`.`udc` ON `librarydb`.`udc`.id_udc = `librarydb`.`books`.index_udc \n\
+                  `udc` ON `udc`.id_udc = `books`.index_udc \n\
                       JOIN \n\
-                  `librarydb`.`bbk` ON `librarydb`.`bbk`.id_bbk = `librarydb`.`books`.index_bbk \n\
-        GROUP BY `librarydb`.`books`.id_books;";
+                  `bbk` ON `bbk`.id_bbk = `books`.index_bbk \n\
+        GROUP BY `books`.id_books;";
         return query;
        }
 
 
+
     static QString search_by_genre_name_cache(QString genre_name){
         QString query =
-        "SELECT * FROM `librarydb`.`cache` \
-        WHERE `librarydb`.`cache`.id_books IN \
-        (SELECT	librarydb.genre_join_table.id_books \
-        FROM librarydb.genre_join_table \
-        WHERE librarydb.genre_join_table.id_genre = \
-        (SELECT	librarydb.genre.id_genre \
-        FROM librarydb.genre \
-        WHERE librarydb.genre.genre_record = '%1'));";
+        "SELECT * FROM `cache` \
+        WHERE `cache`.id_books IN \
+        (SELECT	genre_join_table.id_books \
+        FROM genre_join_table \
+        WHERE genre_join_table.id_genre = \
+        (SELECT	genre.id_genre \
+        FROM genre \
+        WHERE genre.genre_record = '%1'));";
         return query.arg(genre_name);
     }
 
     static QString search_by_author_name_cache(QString author_name){
         QString query =
-        "SELECT * FROM `librarydb`.`cache` \
-        WHERE `librarydb`.`cache`.id_books IN (SELECT \
-        librarydb.author_join_table.id_books FROM \
-        librarydb.author_join_table WHERE \
-        librarydb.author_join_table.id_author = (SELECT \
-        librarydb.author.id_author FROM librarydb.author \
-        WHERE librarydb.author.author_record = '%1'));";
+        "SELECT * FROM `cache` \
+        WHERE `cache`.id_books IN (SELECT \
+        author_join_table.id_books FROM \
+        author_join_table WHERE \
+        author_join_table.id_author = (SELECT \
+        author.id_author FROM author \
+        WHERE author.author_record = '%1'));";
         return query.arg(author_name);
     }
 
     static QString search_by_book_name_cache(QString book_name){
         QSqlQuery query;
-        query.prepare("SELECT * FROM librarydb.cache WHERE librarydb.cache.name_book like ('%"+book_name+"%');");
+        query.prepare("SELECT * FROM cache WHERE cache.name_book like ('%"+book_name+"%');");
         return query.lastQuery();
+    }
+
+    static QString search_by_name_publisher(QString name_publisher){
+        QString query=
+                "SELECT * FROM cache \
+                WHERE cache.id_books IN (SELECT \
+                id_books FROM books \
+                WHERE books.index_publisher = (SELECT \
+                id_publisher FROM \
+                publisher WHERE publisher_record = '%1'));";
+        return query.arg(name_publisher);
+    }
+
+    static QString search_by_ISBN(QString ISBN){
+        QString query=
+                "SELECT * FROM cache \
+                WHERE cache.шisbn = '%1';";
+        return query.arg(ISBN);
+    }
+
+    static QString search_by_udc(QString name){
+        QString query=
+                "SELECT * FROM cache \
+                WHERE cache.id_books IN (SELECT \
+                id_books FROM books \
+                WHERE books.index_udc = (SELECT \
+                id_udc FROM udc WHERE udc_record = '%1'));";
+        return query.arg(name);
+    }
+
+    static QString search_by_bbk(QString name){
+        QString query=
+                "SELECT * FROM cache \
+                WHERE cache.id_books IN (SELECT \
+                id_books FROM books \
+                WHERE books.index_bbk = (SELECT \
+                id_bbk FROM bbk WHERE bbk_record = '%1'));";
+        return query.arg(name);
     }
 
     static QString search_by_id_book(qint32 id_book){
       QString query =
     "   SELECT \n\
-                  `librarydb`.`books`.id_books, \n\
-                  `librarydb`.`books`.name_book, \n\
-                  GROUP_CONCAT(DISTINCT `librarydb`.`author`.author_record), \n\
-                  GROUP_CONCAT(DISTINCT `librarydb`.`genre`.genre_record), \n\
-                  `librarydb`.`bbk`.bbk_record, \n\
-                  `librarydb`.`udc`.udc_record, \n\
-                  `librarydb`.`books`.isbn, \n\
-                  `librarydb`.`publisher`.publisher_record, \n\
-                  GROUP_CONCAT(DISTINCT `librarydb`.`book_binding_type`.binding_type), \n\
-                  `librarydb`.`books`.description_record \n\
+                  `books`.id_books, \n\
+                  `books`.name_book, \n\
+                  GROUP_CONCAT(DISTINCT `author`.author_record), \n\
+                  GROUP_CONCAT(DISTINCT `genre`.genre_record), \n\
+                  `bbk`.bbk_record, \n\
+                  `udc`.udc_record, \n\
+                  `books`.isbn, \n\
+                  `publisher`.publisher_record, \n\
+                  GROUP_CONCAT(DISTINCT `book_binding_type`.binding_type), \n\
+                  `books`.description_record \n\
         FROM \n\
-                  `librarydb`.`books` \n\
+                  `books` \n\
                       JOIN \n\
-                  `librarydb`.`author_join_table` ON `librarydb`.`author_join_table`.id_books = `librarydb`.`books`.id_books \n\
+                  `author_join_table` ON `author_join_table`.id_books = `books`.id_books \n\
                       JOIN \n\
-                  `librarydb`.`author` ON `librarydb`.`author`.id_author = `librarydb`.`author_join_table`.id_author \n\
+                  `author` ON `author`.id_author = `author_join_table`.id_author \n\
                       JOIN \n\
-                  `librarydb`.`genre_join_table` ON `librarydb`.`genre_join_table`.id_books = `librarydb`.`books`.id_books \n\
+                  `genre_join_table` ON `genre_join_table`.id_books = `books`.id_books \n\
                       JOIN \n\
-                  `librarydb`.`genre` ON `librarydb`.`genre`.id_genre = `librarydb`.`genre_join_table`.id_genre \n\
+                  `genre` ON `genre`.id_genre = `genre_join_table`.id_genre \n\
                       JOIN    \n\
-                  `librarydb`.`book_binding_type` ON `librarydb`.`book_binding_type`.id_book_binding_type = `librarydb`.`books`.index_book_binding_type \n\
+                  `book_binding_type` ON `book_binding_type`.id_book_binding_type = `books`.index_book_binding_type \n\
                       JOIN \n\
-                  `librarydb`.`publisher` ON `librarydb`.`publisher`.id_publisher = `librarydb`.`books`.index_publisher \n\
+                  `publisher` ON `publisher`.id_publisher = `books`.index_publisher \n\
                       JOIN \n\
-                  `librarydb`.`udc` ON `librarydb`.`udc`.id_udc = `librarydb`.`books`.index_udc \n\
+                  `udc` ON `udc`.id_udc = `books`.index_udc \n\
                       JOIN \n\
-                  `librarydb`.`bbk` ON `librarydb`.`bbk`.id_bbk = `librarydb`.`books`.index_bbk \n\
+                  `bbk` ON `bbk`.id_bbk = `books`.index_bbk \n\
         WHERE \n\
-                   `librarydb`.`books`.id_books = '%1' \n\
-        GROUP BY `librarydb`.`books`.id_books;";
+                   `books`.id_books = '%1' \n\
+        GROUP BY `books`.id_books;";
         return query.arg(id_book);
        }
 
     static QString search_by_id_genre(qint32 id_book){
       QString query =
     "   SELECT \n\
-                  `librarydb`.`books`.id_books, \n\
-                  `librarydb`.`books`.name_book, \n\
-                  GROUP_CONCAT(DISTINCT `librarydb`.`author`.author_record), \n\
-                  GROUP_CONCAT(DISTINCT `librarydb`.`genre`.genre_record), \n\
-                  `librarydb`.`bbk`.bbk_record, \n\
-                  `librarydb`.`udc`.udc_record, \n\
-                  `librarydb`.`books`.isbn, \n\
-                  `librarydb`.`publisher`.publisher_record, \n\
-                  GROUP_CONCAT(DISTINCT `librarydb`.`book_binding_type`.binding_type), \n\
-                  `librarydb`.`books`.description_record \n\
+                  `books`.id_books, \n\
+                  `books`.name_book, \n\
+                  GROUP_CONCAT(DISTINCT `author`.author_record), \n\
+                  GROUP_CONCAT(DISTINCT `genre`.genre_record), \n\
+                  `bbk`.bbk_record, \n\
+                  `udc`.udc_record, \n\
+                  `books`.isbn, \n\
+                  `publisher`.publisher_record, \n\
+                  GROUP_CONCAT(DISTINCT `book_binding_type`.binding_type), \n\
+                  `books`.description_record \n\
         FROM \n\
-                  `librarydb`.`books` \n\
+                  `books` \n\
                       JOIN \n\
-                  `librarydb`.`author_join_table` ON `librarydb`.`author_join_table`.id_books = `librarydb`.`books`.id_books \n\
+                  `author_join_table` ON `author_join_table`.id_books = `books`.id_books \n\
                       JOIN \n\
-                  `librarydb`.`author` ON `librarydb`.`author`.id_author = `librarydb`.`author_join_table`.id_author \n\
+                  `author` ON `author`.id_author = `author_join_table`.id_author \n\
                       JOIN \n\
-                  `librarydb`.`genre_join_table` ON `librarydb`.`genre_join_table`.id_books = `librarydb`.`books`.id_books \n\
+                  `genre_join_table` ON `genre_join_table`.id_books = `books`.id_books \n\
                       JOIN \n\
-                  `librarydb`.`genre` ON `librarydb`.`genre`.id_genre = `librarydb`.`genre_join_table`.id_genre \n\
+                  `genre` ON `genre`.id_genre = `genre_join_table`.id_genre \n\
                       JOIN    \n\
-                  `librarydb`.`book_binding_type` ON `librarydb`.`book_binding_type`.id_book_binding_type = `librarydb`.`books`.index_book_binding_type \n\
+                  `book_binding_type` ON `book_binding_type`.id_book_binding_type = `books`.index_book_binding_type \n\
                       JOIN \n\
-                  `librarydb`.`publisher` ON `librarydb`.`publisher`.id_publisher = `librarydb`.`books`.index_publisher \n\
+                  `publisher` ON `publisher`.id_publisher = `books`.index_publisher \n\
                       JOIN \n\
-                  `librarydb`.`udc` ON `librarydb`.`udc`.id_udc = `librarydb`.`books`.index_udc \n\
+                  `udc` ON `udc`.id_udc = `books`.index_udc \n\
                       JOIN \n\
-                  `librarydb`.`bbk` ON `librarydb`.`bbk`.id_bbk = `librarydb`.`books`.index_bbk \n\
+                  `bbk` ON `bbk`.id_bbk = `books`.index_bbk \n\
               WHERE\n\
-                  `librarydb`.`books`.id_books IN (SELECT \n\
-                          librarydb.genre_join_table.id_books \n\
+                  `books`.id_books IN (SELECT \n\
+                          genre_join_table.id_books \n\
                       FROM \n\
-                          librarydb.genre_join_table \n\
+                          genre_join_table \n\
                       WHERE \n\
-                          librarydb.genre_join_table.id_genre = '%1') \n\
-        GROUP BY `librarydb`.`books`.id_books;";
+                          genre_join_table.id_genre = '%1') \n\
+        GROUP BY `books`.id_books;";
         return query.arg(id_book);
        }
 
     static QString search_by_file_name(QString file_name){
     QString query =
     "   SELECT \n\
-                `librarydb`.`filetables`.number_of_row \n\
+                `filetables`.number_of_row \n\
         FROM\n\
-                `librarydb`.`filetables` \n\
+                `filetables` \n\
         WHERE \n\
-                `librarydb`.`filetables`.file_name = '%1'";
+                `filetables`.file_name = '%1'";
     return query.arg(file_name);
     }
 
     static QString search_by_name_book(QString name_book){
         QString query =
-        "SELECT `librarydb`.`books`.id_books \n\
+        "SELECT `books`.id_books \n\
         FROM \n\
-            `librarydb`.`books` \n\
+            `books` \n\
         WHERE \n\
-            `librarydb`.`books`.name_book = '%1'";
+            `books`.name_book = '%1'";
         return query.arg(name_book);
     }
 
     static QString search_by_release_date_book(QString release_date_book){
         QString query =
-            "SELECT * FROM librarydb.cache \
-            WHERE librarydb.cache.release_date_book = '%1'";
+            "SELECT * FROM cache \
+            WHERE cache.release_date_book = '%1'";
         return query.arg(release_date_book);
     }
     static QString search_by_binding_book(QString name_binding){
         QString query =
-        "SELECT `librarydb`.`book_binding_type`.id_book_binding_type \n\
+        "SELECT `book_binding_type`.id_book_binding_type \n\
         FROM \n\
-            `librarydb`.`book_binding_type` \n\
+            `book_binding_type` \n\
         WHERE \n\
-            `librarydb`.`book_binding_type`.`binding_type` = '%1'";
+            `book_binding_type`.`binding_type` = '%1'";
         return query.arg(name_binding);
     }
 
     static QString search_by_publisher_name(QString publisher_name){
         QString query =
-        "SELECT `librarydb`.`publisher`.id_publisher \n\
+        "SELECT `publisher`.id_publisher \n\
         FROM \n\
-            `librarydb`.`publisher` \n\
+            `publisher` \n\
         WHERE \n\
-            `librarydb`.`publisher`.`publisher_record` = '%1'";
+            `publisher`.`publisher_record` = '%1'";
         return query.arg(publisher_name);
     }
 
     static QString search_by_name_author(QString name_book){
         QString query =
-        "SELECT `librarydb`.`author`.id_author \n\
+        "SELECT `author`.id_author \n\
         FROM \n\
-            `librarydb`.`author` \n\
+            `author` \n\
         WHERE \n\
-            `librarydb`.`author`.author_record = '%1'";
+            `author`.author_record = '%1'";
         return query.arg(name_book);
     }
 
     static QString search_by_name_genre(QString name_genre){
         QString query =
-        "SELECT `librarydb`.`genre`.id_genre \n\
+        "SELECT `genre`.id_genre \n\
         FROM  \n\
-            `librarydb`.`genre`  \n\
+            `genre`  \n\
         WHERE  \n\
-            `librarydb`.`genre`.genre_record = '%1'";
+            `genre`.genre_record = '%1'";
         return query.arg(name_genre);
     }
 
     static QString delete_by_id_book(qint32 id_book){
         QString query =
-        "DELETE FROM `librarydb`.`books` \n\
+        "DELETE FROM `books` \n\
         WHERE \n\
-            `librarydb`.`books`.id_books = %1";
+            `books`.id_books = %1";
         return query.arg(id_book);
     }
 
     static QString delete_by_id_author_join_table(qint32 id_book){
         QString query =
-        "DELETE FROM `librarydb`.`author_join_table`\n\
+        "DELETE FROM `author_join_table`\n\
         WHERE\n\
-            `librarydb`.`author_join_table`.id_books = %1";
+            `author_join_table`.id_books = %1";
         return query.arg(id_book);
     }
 
     static QString delete_by_id_genre_join_table(qint32 id_book){
         QString query =
-        "DELETE FROM `librarydb`.`genre_join_table`\n\
+        "DELETE FROM `genre_join_table`\n\
         WHERE\n\
-            `librarydb`.`genre_join_table`.id_books = %1";
+            `genre_join_table`.id_books = %1";
         return query.arg(id_book);
     }
 
     static QString delete_by_id_bbk(qint32 id_book){
         QString query =
-        "DELETE FROM `librarydb`.`bbk` \n\
+        "DELETE FROM `bbk` \n\
         WHERE \n\
-            `librarydb`.`bbk`.id_bbk = %1";
+            `bbk`.id_bbk = %1";
         return query.arg(id_book);
     }
 
     static QString delete_by_id_udc(qint32 id_book){
         QString query =
-        "DELETE FROM `librarydb`.`udc` \n\
+        "DELETE FROM `udc` \n\
         WHERE \n\
-            `librarydb`.`udc`.id_udc = %1";
+            `udc`.id_udc = %1";
         return query.arg(id_book);
     }
 
     static QString delete_by_id_description(qint32 id_book){
         QString query =
-        "DELETE FROM `librarydb`.`description` \n\
+        "DELETE FROM `description` \n\
         WHERE \n\
-            `librarydb`.`description`.id_description = %1";
+            `description`.id_description = %1";
         return query.arg(id_book);
     }
 
     static QString add_row_in_table_author(QString author_name){
-        QString query = "INSERT INTO `librarydb`.`author`(`author_record`) VALUES ('%1');";
+        QString query = "INSERT INTO `author`(`author_record`) VALUES ('%1');";
         return query.arg(author_name);
     }
 
     static QString add_row_in_table_genre(QString genre_name){
-        QString query = "INSERT INTO `librarydb`.`genre`(`genre_record`) VALUES ('%1');";
+        QString query = "INSERT INTO `genre`(`genre_record`) VALUES ('%1');";
         return query.arg(genre_name);
     }
 
     static QString add_row_in_table_publisher(QString publisher_name){
-        QString query = "INSERT INTO `librarydb`.`publisher`(`publisher_record`) VALUES ('%1');";
+        QString query = "INSERT INTO `publisher`(`publisher_record`) VALUES ('%1');";
         return query.arg(publisher_name);
     }
 
     static QString add_row_in_table_bbk(QString bbk_index){
-        QString query = "INSERT INTO `librarydb`.`bbk`(`bbk_record`) VALUES ('%1');";
+        QString query = "INSERT INTO `bbk`(`bbk_record`) VALUES ('%1');";
         return query.arg(bbk_index);
     }
 
     static QString add_row_in_table_udc(QString udc_index){
-        QString query = "INSERT INTO `librarydb`.`udc`(`udc_record`) VALUES ('%1');";
+        QString query = "INSERT INTO `udc`(`udc_record`) VALUES ('%1');";
         return query.arg(udc_index);
     }
 
     static QString add_row_in_table_description(QString description){
-        QString query = "INSERT INTO `librarydb`.`description`(`description_record`) VALUES ('%1');";
+        QString query = "INSERT INTO `description`(`description_record`) VALUES ('%1');";
         return query.arg(description);
     }
 
     static QString add_row_in_table_file_tables(QString file_name, qint32 number_of_row){
-        QString query = "INSERT INTO `librarydb`.`filetables`(`file_name`, `number_of_row`) \n\
+        QString query = "INSERT INTO `filetables`(`file_name`, `number_of_row`) \n\
                          VALUES ('%1', %2);";
         return query.arg(file_name, number_of_row);
     }
 
     static QString update_row_in_table_file_tables(QString file_name, qint32 number_of_row){
-        QString query = "UPDATE `librarydb`.`filetables` SET `number_of_row` = '%1' \n\
+        QString query = "UPDATE `filetables` SET `number_of_row` = '%1' \n\
                          WHERE `file_name` = '%2';";
         return query.arg(file_name, number_of_row);
     }
@@ -320,7 +359,7 @@ public:
     static QString add_row_in_table_books(QString name_book, qint32 number_of_pages_book,
                                qint32 index_book_binding_type, qint32 release_date_book,
                                QString index_udc, QString index_bbk, qint32 index_publisher, QString isbn, QString description_record){
-        QString query = "INSERT INTO `librarydb`.`books`\n\
+        QString query = "INSERT INTO `books`\n\
                         (`name_book`,`number_of_pages_book`,\n\
                         `index_book_binding_type`,`release_date_book`,\n\
                         `index_udc`,`index_bbk`, `index_publisher`,`isbn`, `description_record`)\n\
@@ -329,14 +368,14 @@ public:
     }
 */
     static QString add_row_in_author_join_table(qint32 id_books, qint32 id_author){
-        QString query = "INSERT INTO `librarydb`.`author_join_table` \n\
+        QString query = "INSERT INTO `author_join_table` \n\
                         (`id_books`,`id_author`) \n\
                          VALUES (%1, %2);";
         return query.arg(id_books, id_author);
     }
 
     static QString add_row_in_genre_join_table(qint32 id_books, qint32 id_author){
-        QString query = "INSERT INTO `librarydb`.`genre_join_table` \n\
+        QString query = "INSERT INTO `genre_join_table` \n\
                         (`id_books`,`id_genre`) \n\
                          VALUES (%s, %s);";
         return query.arg(id_books, id_author);

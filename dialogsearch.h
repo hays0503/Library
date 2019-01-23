@@ -21,11 +21,39 @@ public:
     ~DialogSearch();
 
 private slots:
-    void on_buttonBox_clicked(QAbstractButton *button);
     void editTextChanged(const QString &text);
+    void on_checkBox_genre_stateChanged(int arg1);
+
+    void on_checkBox_publisher_stateChanged(int arg1);
+
+    void on_checkBox_udc_stateChanged(int arg1);
+
+    void on_checkBox_author_stateChanged(int arg1);
+
+    void on_checkBox_ISBN_stateChanged(int arg1);
+
+    void on_checkBox_bbk_stateChanged(int arg1);
+
+    void on_pushButton_name_book_clicked();
+
+    void on_pushButton_genre_clicked();
+
+    void on_pushButton_author_clicked();
+
+    void on_pushButton_publisher_clicked();
+
+    void on_pushButton_ISBN_clicked();
+
+    void on_pushButton_udc_clicked();
+
+    void on_pushButton_bbk_clicked();
+
+    void on_pushButton_release_date_book_clicked();
+
+    void on_tabWidget_currentChanged(int index);
 
 signals:
-    void signal_changeTable(QString item);
+    void signal_changeTable(QString query);
 
 private:
     Ui::DialogSearch *ui;
@@ -36,6 +64,8 @@ private:
     QCompleter *completer_udc;
     QCompleter *completer_bbk;
     QCompleter *completer_release_date_book;
+
+    DataBase *p_connect;
 
     void InitSearchList(DataBase *p_connect);
 };
