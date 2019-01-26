@@ -82,7 +82,8 @@ public:
 
 
     /*Запрос данных из БД*/
-    QSqlQueryModel *getQueryData(QString Query);
+    QSqlQuery *getQueryData();
+
 
 
     bool setCompleter(QCompleter *completer, QString Query);

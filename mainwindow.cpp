@@ -41,9 +41,9 @@ void MainWindow::OnDoubleClicked(const QModelIndex &index)
 
 void MainWindow::on_Search_in_database_triggered()
 {
-    p_dialogForm = new DialogSearch(nullptr,db);
-    p_dialogForm->show();
-    connect(p_dialogForm,
+    p_SearchDialogForm = new DialogSearch(nullptr,db);
+    p_SearchDialogForm->show();
+    connect(p_SearchDialogForm,
             SIGNAL(signal_changeTable(QString)),
             this,
             SLOT(slotChangeTable(QString))
@@ -63,4 +63,10 @@ void MainWindow::on_Connect_to_database_triggered()
             SLOT(OnDoubleClicked(QModelIndex))
             );
 
+}
+
+void MainWindow::on_action_triggered()
+{
+    p_AddDialogForm = new DialogAddBook(nullptr,db);
+    p_AddDialogForm->show();
 }

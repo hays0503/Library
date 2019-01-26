@@ -49,8 +49,6 @@ public:
         return query;
        }
 
-
-
     static QString search_by_genre_name_cache(QString genre_name){
         QString query =
         "SELECT * FROM `cache` \
@@ -82,7 +80,7 @@ public:
         return query.lastQuery();
     }
 
-    static QString search_by_name_publisher(QString name_publisher){
+    static QString search_by_name_publisher_cache(QString name_publisher){
         QString query=
                 "SELECT * FROM cache \
                 WHERE cache.id_books IN (SELECT \
@@ -93,14 +91,14 @@ public:
         return query.arg(name_publisher);
     }
 
-    static QString search_by_ISBN(QString ISBN){
+    static QString search_by_ISBN_cache(QString ISBN){
         QString query=
                 "SELECT * FROM cache \
-                WHERE cache.шisbn = '%1';";
+                WHERE cache.isbn = '%1';";
         return query.arg(ISBN);
     }
 
-    static QString search_by_udc(QString name){
+    static QString search_by_udc_cache(QString name){
         QString query=
                 "SELECT * FROM cache \
                 WHERE cache.id_books IN (SELECT \
@@ -110,7 +108,7 @@ public:
         return query.arg(name);
     }
 
-    static QString search_by_bbk(QString name){
+    static QString search_by_bbk_cache(QString name){
         QString query=
                 "SELECT * FROM cache \
                 WHERE cache.id_books IN (SELECT \
@@ -206,7 +204,7 @@ public:
         FROM\n\
                 `filetables` \n\
         WHERE \n\
-                `filetables`.file_name = '%1'";
+                `filetables`.file_name = '%1';";
     return query.arg(file_name);
     }
 
@@ -216,23 +214,24 @@ public:
         FROM \n\
             `books` \n\
         WHERE \n\
-            `books`.name_book = '%1'";
+            `books`.name_book = '%1';";
         return query.arg(name_book);
     }
 
     static QString search_by_release_date_book(QString release_date_book){
         QString query =
             "SELECT * FROM cache \
-            WHERE cache.release_date_book = '%1'";
+            WHERE cache.release_date_book = '%1';";
         return query.arg(release_date_book);
     }
+
     static QString search_by_binding_book(QString name_binding){
         QString query =
         "SELECT `book_binding_type`.id_book_binding_type \n\
         FROM \n\
             `book_binding_type` \n\
         WHERE \n\
-            `book_binding_type`.`binding_type` = '%1'";
+            `book_binding_type`.`binding_type` = '%1';";
         return query.arg(name_binding);
     }
 
@@ -242,7 +241,7 @@ public:
         FROM \n\
             `publisher` \n\
         WHERE \n\
-            `publisher`.`publisher_record` = '%1'";
+            `publisher`.`publisher_record` = '%1';";
         return query.arg(publisher_name);
     }
 
@@ -252,7 +251,7 @@ public:
         FROM \n\
             `author` \n\
         WHERE \n\
-            `author`.author_record = '%1'";
+            `author`.author_record = '%1';";
         return query.arg(name_book);
     }
 
@@ -262,7 +261,7 @@ public:
         FROM  \n\
             `genre`  \n\
         WHERE  \n\
-            `genre`.genre_record = '%1'";
+            `genre`.genre_record = '%1';";
         return query.arg(name_genre);
     }
 
@@ -270,7 +269,7 @@ public:
         QString query =
         "DELETE FROM `books` \n\
         WHERE \n\
-            `books`.id_books = %1";
+            `books`.id_books = %1;";
         return query.arg(id_book);
     }
 
@@ -278,7 +277,7 @@ public:
         QString query =
         "DELETE FROM `author_join_table`\n\
         WHERE\n\
-            `author_join_table`.id_books = %1";
+            `author_join_table`.id_books = %1;";
         return query.arg(id_book);
     }
 
@@ -286,7 +285,7 @@ public:
         QString query =
         "DELETE FROM `genre_join_table`\n\
         WHERE\n\
-            `genre_join_table`.id_books = %1";
+            `genre_join_table`.id_books = %1;";
         return query.arg(id_book);
     }
 
@@ -294,7 +293,7 @@ public:
         QString query =
         "DELETE FROM `bbk` \n\
         WHERE \n\
-            `bbk`.id_bbk = %1";
+            `bbk`.id_bbk = %1;";
         return query.arg(id_book);
     }
 
@@ -302,7 +301,7 @@ public:
         QString query =
         "DELETE FROM `udc` \n\
         WHERE \n\
-            `udc`.id_udc = %1";
+            `udc`.id_udc = %1;";
         return query.arg(id_book);
     }
 
@@ -310,7 +309,7 @@ public:
         QString query =
         "DELETE FROM `description` \n\
         WHERE \n\
-            `description`.id_description = %1";
+            `description`.id_description = %1;";
         return query.arg(id_book);
     }
 

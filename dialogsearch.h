@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include "database.h"
+#include "dialogtextresponse.h"
 
 namespace Ui {
 class DialogSearch;
@@ -16,6 +17,17 @@ class DialogSearch : public QDialog
     Q_OBJECT
 
 public:
+    void InitComboBox(DataBase *p_connect,
+                      QComboBox *comboBox,
+                      QString table_name,
+                      qint32 row);
+
+    void InitCompliter(DataBase *p_connect,
+                       QComboBox *comboBox,
+                       QCompleter *completer_name,
+                       QString queru_completer,
+                       int arg1);
+
     explicit DialogSearch(QWidget *parent = nullptr,
                           DataBase *p_connect = nullptr);
     ~DialogSearch();
@@ -66,6 +78,8 @@ private:
     QCompleter *completer_release_date_book;
 
     DataBase *p_connect;
+
+    DialogTextResponse *dialog_add_genre;
 
     void InitSearchList(DataBase *p_connect);
 };

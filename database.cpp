@@ -21,6 +21,7 @@ bool DataBase::CreatConection(QString NameDataBase = "")
 
     if (objMDB.open()) {
            qDebug("Success!");
+           qDebug()<<objMDB;
            return true;
     } else {
         qDebug()<<objMDB.lastError().text();
@@ -110,28 +111,29 @@ QString DataBase::getItemProduct(QString TableName, qint32 Row)
   }else return objTable->record(Row).value("Номенклатура товара").toString();
 }
 
-QSqlQueryModel *DataBase::getQueryData(QString Query)
+QSqlQuery *DataBase::getQueryData()
 {
-    objTableQuery = new QSqlQueryModel(this);
-    objTableQuery->setQuery(Query);
-    return objTableQuery;
+    QSqlQuery *p_QSqlQuery = new QSqlQuery(*this->getObjMDB());
+    return p_QSqlQuery;
 }
 
 bool DataBase::setCompleter(QCompleter *completer, QString Query)
 {
     qDebug()<<completer;
+    qDebug()<<objMDB;
     objTableQuery = new QSqlQueryModel(this);
     objTableQuery->setQuery(Query);
-    if (!objTable ->select())
-    {
-        qDebug()<<objTable->lastError().databaseText();
-        qDebug()<<objTable ->lastError().driverText();
-        return false;
-    }else {
+//    objTableQuery->query();
+//    if (!objTable ->select())
+//    {
+//        qDebug()<<objTable->lastError().databaseText();
+//        qDebug()<<objTable ->lastError().driverText();
+//        return false;
+//    }else {
 
     completer->setModel(objTableQuery);
-    return true;
-    }
+//    return true;
+    //    }
 }
 
 void DataBase::DiapasonDate(QTableView *tableView,QString TableName, QDateEdit *Date1, QDateEdit *Date2)

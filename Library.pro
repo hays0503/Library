@@ -33,19 +33,25 @@ SOURCES += \
     database.cpp \
     editform.cpp \
     dialogsearch.cpp \
-    queryfactory.cpp
+    queryfactory.cpp \
+    dialogaddbook.cpp \
+    dialogtextresponse.cpp
 
 HEADERS += \
         mainwindow.h \
     database.h \
     editform.h \
     dialogsearch.h \
-    queryfactory.h
+    queryfactory.h \
+    dialogaddbook.h \
+    dialogtextresponse.h
 
 FORMS += \
         mainwindow.ui \
     editform.ui \
-    dialogsearch.ui
+    dialogsearch.ui \
+    dialogaddbook.ui \
+    dialogtextresponse.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

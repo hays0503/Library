@@ -152,8 +152,15 @@
     <addaction name="Search_in_database"/>
     <addaction name="Filter"/>
    </widget>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Добавление...</string>
+    </property>
+    <addaction name="action"/>
+   </widget>
    <addaction name="menu_database"/>
    <addaction name="menu_database_search"/>
+   <addaction name="menu"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -193,6 +200,11 @@
   <action name="Filter">
    <property name="text">
     <string>Фильтр</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>Добавление книг в бд библеотеки</string>
    </property>
   </action>
  </widget>

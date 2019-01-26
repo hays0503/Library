@@ -6,6 +6,7 @@
 #include <editform.h>
 #include "dialogsearch.h"
 #include "database.h"
+#include "dialogaddbook.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,9 +19,12 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
     editForm *p_editForm;
-    DialogSearch *p_dialogForm;
+    DialogAddBook *p_AddDialogForm;
+    DialogSearch *p_SearchDialogForm;
     DataBase *db;
+
 private slots:
     void OnDoubleClicked(const QModelIndex &index);
 
@@ -29,6 +33,8 @@ private slots:
     void on_Connect_to_database_triggered();
 
 
+
+    void on_action_triggered();
 
 public slots:
     void slotSelectionChange(const QItemSelection &, const QItemSelection &);

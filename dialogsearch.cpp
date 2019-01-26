@@ -12,6 +12,8 @@ DialogSearch::DialogSearch(QWidget *parent,
     ui(new Ui::DialogSearch)
 {
     ui->setupUi(this);
+    this->move(35,35);
+    this->setFocus();
 
     this->p_connect = p_connect;
 
@@ -25,23 +27,29 @@ DialogSearch::~DialogSearch()
     delete ui;
 }
 
-void InitComboBox(DataBase *p_connect,
+void DialogSearch::InitComboBox(DataBase *p_connect,
                   QComboBox *comboBox,
                   QString table_name,
                   qint32 row)
 {
+    ui->progressBar->setValue(20);
+    ui->progressBar->setValue(25);
+    ui->progressBar->setValue(30);
     p_connect->setComboBox(comboBox,table_name,row);
-//    completer_name = new QCompleter();
-//    p_connect->setCompleter(completer_name,queru_completer);
-//    completer_name->setModelSorting(QCompleter::UnsortedModel);
-//    completer_name->setCaseSensitivity(Qt::CaseInsensitive);
-//    completer_name->setCompletionMode(QCompleter::UnfilteredPopupCompletion);
+    ui->progressBar->setValue(40);
+    ui->progressBar->setValue(35);
+    ui->progressBar->setValue(50);
     comboBox->setMaxVisibleItems(4);
+    ui->progressBar->setValue(60);
+    ui->progressBar->setValue(65);
+    ui->progressBar->setValue(70);
     comboBox->setEditable(true);
-    //comboBox->setCompleter(completer_name);
+    ui->progressBar->setValue(80);
+    ui->progressBar->setValue(85);
+    ui->progressBar->setValue(90);
 }
 
-void InitCompliter(DataBase *p_connect,
+void DialogSearch::InitCompliter(DataBase *p_connect,
                    QComboBox *comboBox,
                    QCompleter *completer_name,
                    QString queru_completer,
@@ -132,71 +140,105 @@ void DialogSearch::on_checkBox_bbk_stateChanged(int arg1)
 
 void DialogSearch::on_pushButton_name_book_clicked()
 {
+    ui->progressBar->setValue(10);
     QString query = ui->line_name_book->text();
+    ui->progressBar->setValue(20);
     query = QueryFactory::search_by_book_name_cache(query);
+    ui->progressBar->setValue(40);
     emit signal_changeTable(query);
+    ui->progressBar->setValue(90);
+    ui->progressBar->setValue(100);
     this->close();
 }
 
 void DialogSearch::on_pushButton_genre_clicked()
 {
+    ui->progressBar->setValue(10);
     QString query = ui->comboBox_genre->itemText(ui->comboBox_genre->currentIndex());
+    ui->progressBar->setValue(20);
     query = QueryFactory::search_by_genre_name_cache(query);
+    ui->progressBar->setValue(50);
     emit signal_changeTable(query);
+    ui->progressBar->setValue(100);
     this->close();
 }
 
 void DialogSearch::on_pushButton_author_clicked()
 {
+    ui->progressBar->setValue(10);
     QString query = ui->comboBox_author->itemText(ui->comboBox_author->currentIndex());
+    ui->progressBar->setValue(50);
     query = QueryFactory::search_by_author_name_cache(query);
+    ui->progressBar->setValue(80);
     emit signal_changeTable(query);
+    ui->progressBar->setValue(100);
     this->close();
 }
 
 void DialogSearch::on_pushButton_publisher_clicked()
 {
+    ui->progressBar->setValue(10);
     QString query = ui->comboBox_publisher->itemText(ui->comboBox_publisher->currentIndex());
-    query = QueryFactory::search_by_name_publisher(query);
+    ui->progressBar->setValue(50);
+    query = QueryFactory::search_by_name_publisher_cache(query);
+    ui->progressBar->setValue(80);
     emit signal_changeTable(query);
+    ui->progressBar->setValue(100);
     this->close();
 }
 
 void DialogSearch::on_pushButton_ISBN_clicked()
 {
+    ui->progressBar->setValue(10);
     QString query = ui->comboBox_ISBN->itemText(ui->comboBox_ISBN->currentIndex());
-    query = QueryFactory::search_by_ISBN(query);
+    ui->progressBar->setValue(50);
+    query = QueryFactory::search_by_ISBN_cache(query);
+    ui->progressBar->setValue(80);
     emit signal_changeTable(query);
+    ui->progressBar->setValue(100);
     this->close();
 }
 
 void DialogSearch::on_pushButton_udc_clicked()
 {
+    ui->progressBar->setValue(10);
     QString query = ui->comboBox_udc->itemText(ui->comboBox_udc->currentIndex());
-    query = QueryFactory::search_by_udc(query);
+    ui->progressBar->setValue(50);
+    query = QueryFactory::search_by_udc_cache(query);
+    ui->progressBar->setValue(80);
     emit signal_changeTable(query);
+    ui->progressBar->setValue(100);
     this->close();
 }
 
 void DialogSearch::on_pushButton_bbk_clicked()
 {
+    ui->progressBar->setValue(10);
     QString query = ui->comboBox_bbk->itemText(ui->comboBox_bbk->currentIndex());
-    query = QueryFactory::search_by_udc(query);
+    ui->progressBar->setValue(50);
+    query = QueryFactory::search_by_udc_cache(query);
+    ui->progressBar->setValue(80);
     emit signal_changeTable(query);
+    ui->progressBar->setValue(100);
     this->close();
 }
 
 void DialogSearch::on_pushButton_release_date_book_clicked()
 {
+    ui->progressBar->setValue(10);
     QString query = QVariant(ui->spinBox_release_date_book->value()).toString();
+    ui->progressBar->setValue(50);
     query = QueryFactory::search_by_release_date_book(query);
+    ui->progressBar->setValue(80);
     emit signal_changeTable(query);
+    ui->progressBar->setValue(100);
     this->close();
 }
 
 void DialogSearch::on_tabWidget_currentChanged(int index)
 {
     qDebug()<<index;
+    ui->progressBar->setValue(0);
     switch (index) {
     case 1: InitComboBox(p_connect,
                          ui->comboBox_genre,
@@ -223,5 +265,7 @@ void DialogSearch::on_tabWidget_currentChanged(int index)
                          "bbk",
                          1);break;
     }
+    ui->progressBar->setValue(100);
 
 }
+
