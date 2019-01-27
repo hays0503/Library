@@ -54,15 +54,14 @@ void DialogAddBook::add_new_item(QString QuerySearch,
         if (!p_QSqlQuery->exec(QueryAdd)) {
             qDebug() << "Unable to do insert operation";
         }
-        result = p_connect->SearchSQL(QuerySearch,indexOf);
-        if(indexOf=="id_genre"){editableBook.id_genre.append(result);};
-        if(indexOf=="id_author"){editableBook.id_author.append(result);};
-        if(indexOf=="id_publisher"){editableBook.index_publisher=result;};
-        if(indexOf=="id_bbk"){editableBook.index_bbk=result;};
-        if(indexOf=="id_udc"){editableBook.index_udc=result;};
-
-
     }
+    result = p_connect->SearchSQL(QuerySearch,indexOf);
+    qDebug()<<"RESULT "<<result;
+    if(indexOf=="id_genre"){editableBook.id_genre.append(result);};
+    if(indexOf=="id_author"){editableBook.id_author.append(result);};
+    if(indexOf=="id_publisher"){editableBook.index_publisher=result;};
+    if(indexOf=="id_bbk"){editableBook.index_bbk=result;};
+    if(indexOf=="id_udc"){editableBook.index_udc=result;};
     delete p_QSqlQuery;
 }
 
