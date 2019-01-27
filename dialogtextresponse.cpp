@@ -9,7 +9,7 @@ DialogTextResponse::DialogTextResponse(QWidget *parent,
     ui(new Ui::DialogTextResponse)
 {
     ui->setupUi(this);
-    qDebug()<<query;
+    result = "None result";
     InitCompliter(p_connect,
                   ui->lineEdit,
                   completer_item,

@@ -83,6 +83,7 @@ public:
 
     /*Запрос данных из БД*/
     QSqlQuery *getQueryData();
+    int SearchSQL(QString QuerySearch, QString indexOf);
 
 
 

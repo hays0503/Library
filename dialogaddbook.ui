@@ -583,7 +583,7 @@
      <rect>
       <x>10</x>
       <y>20</y>
-      <width>711</width>
+      <width>371</width>
       <height>60</height>
      </rect>
     </property>
@@ -595,7 +595,7 @@
       <rect>
        <x>10</x>
        <y>30</y>
-       <width>670</width>
+       <width>351</width>
        <height>20</height>
       </rect>
      </property>
@@ -613,7 +613,7 @@
     <property name="title">
      <string>Жанр добавляемой книги</string>
     </property>
-    <widget class="QLabel" name="label_2">
+    <widget class="QLabel" name="label_genre">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -665,7 +665,7 @@
       <string>+</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_9">
+    <widget class="QPushButton" name="pushButton_rmlistiem_genre">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -691,7 +691,7 @@
     <property name="title">
      <string>Автор добавляемой книги</string>
     </property>
-    <widget class="QLabel" name="label_3">
+    <widget class="QLabel" name="label_author">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -782,7 +782,7 @@
       <string>+</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_10">
+    <widget class="QPushButton" name="pushButton_rmlistiem_author">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -808,7 +808,7 @@
     <property name="title">
      <string>ISBN добавляемой книги</string>
     </property>
-    <widget class="QLabel" name="label_5">
+    <widget class="QLabel" name="label_ISBN">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -863,7 +863,7 @@
     <property name="title">
      <string>Издатель добавляемой книги</string>
     </property>
-    <widget class="QLabel" name="label_7">
+    <widget class="QLabel" name="label_publisher">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -918,7 +918,7 @@
     <property name="title">
      <string>УДК добавляемой книги</string>
     </property>
-    <widget class="QLabel" name="label_10">
+    <widget class="QLabel" name="label_udc">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -973,7 +973,7 @@
     <property name="title">
      <string>ББК добавляемой книги</string>
     </property>
-    <widget class="QLabel" name="label_12">
+    <widget class="QLabel" name="label_bbk">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -1013,6 +1013,97 @@
      </property>
      <property name="text">
       <string>ББК:</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton_addBook">
+    <property name="geometry">
+     <rect>
+      <x>840</x>
+      <y>30</y>
+      <width>181</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Добавить книгу</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_book_binding">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>20</y>
+      <width>181</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Переплёт книги</string>
+    </property>
+    <widget class="QComboBox" name="comboBox_book_binding">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>161</width>
+       <height>22</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_year_release">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>20</y>
+      <width>110</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Год издания</string>
+    </property>
+    <widget class="QSpinBox" name="spinBox_release_year">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>24</y>
+       <width>91</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>2100</number>
+     </property>
+     <property name="value">
+      <number>2018</number>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_12">
+    <property name="geometry">
+     <rect>
+      <x>700</x>
+      <y>20</y>
+      <width>121</width>
+      <height>60</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Колличество страниц</string>
+    </property>
+    <widget class="QSpinBox" name="spinBox_num_pages">
+     <property name="geometry">
+      <rect>
+       <x>15</x>
+       <y>25</y>
+       <width>91</width>
+       <height>30</height>
+      </rect>
+     </property>
+     <property name="maximum">
+      <number>99999</number>
      </property>
     </widget>
    </widget>

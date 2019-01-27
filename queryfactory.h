@@ -80,6 +80,14 @@ public:
         return query.lastQuery();
     }
 
+    static QString search_name_publisher(QString name_publisher){
+        QString query=
+                "SELECT \
+                id_publisher FROM \
+                publisher WHERE publisher_record = '%1';";
+        return query.arg(name_publisher);
+    }
+
     static QString search_by_name_publisher_cache(QString name_publisher){
         QString query=
                 "SELECT * FROM cache \
@@ -98,6 +106,13 @@ public:
         return query.arg(ISBN);
     }
 
+    static QString search_ISBN_book(QString ISBN){
+        QString query=
+                "SELECT id_books FROM books \
+                WHERE books.isbn = '%1';";
+        return query.arg(ISBN);
+    }
+
     static QString search_by_udc_cache(QString name){
         QString query=
                 "SELECT * FROM cache \
@@ -108,6 +123,13 @@ public:
         return query.arg(name);
     }
 
+    static QString search_udc(QString name){
+        QString query=
+                "SELECT \
+                id_udc FROM udc WHERE udc_record = '%1';";
+        return query.arg(name);
+    }
+
     static QString search_by_bbk_cache(QString name){
         QString query=
                 "SELECT * FROM cache \
@@ -115,6 +137,12 @@ public:
                 id_books FROM books \
                 WHERE books.index_bbk = (SELECT \
                 id_bbk FROM bbk WHERE bbk_record = '%1'));";
+        return query.arg(name);
+    }
+    static QString search_bbk(QString name){
+        QString query=
+                "SELECT \
+                id_bbk FROM bbk WHERE bbk_record = '%1';";
         return query.arg(name);
     }
 

@@ -117,6 +117,22 @@ QSqlQuery *DataBase::getQueryData()
     return p_QSqlQuery;
 }
 
+int DataBase::SearchSQL(QString QuerySearch, QString indexOf)
+{
+    int result = 0;
+    QSqlQuery *p_QSqlQuery = new QSqlQuery(*this->getObjMDB());
+    qDebug()<<QuerySearch;
+    if (!p_QSqlQuery->exec(QuerySearch)) {
+        qDebug() << "Unable to execute query - exiting";
+    }else{
+        QSqlRecord rec = p_QSqlQuery->record();
+        p_QSqlQuery->next();
+        result = p_QSqlQuery->value(rec.indexOf(indexOf)).toInt();
+    }
+    delete p_QSqlQuery;
+    return result;
+}
+
 bool DataBase::setCompleter(QCompleter *completer, QString Query)
 {
     qDebug()<<completer;
