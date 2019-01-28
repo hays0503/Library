@@ -96,6 +96,7 @@ void DialogAddBook::on_pushButton_add_author_clicked()
         add_new_item(QueryFactory::search_by_name_author(name_author),
                      QueryFactory::add_row_in_table_author(name_author),
                      "id_author");
+
     }
 }
 
@@ -113,6 +114,9 @@ void DialogAddBook::on_pushButton_add_new_publisher_clicked()
         add_new_item(QueryFactory::search_name_publisher(name_publisher),
                      QueryFactory::add_row_in_table_publisher(name_publisher),
                      "id_publisher");
+        ui->label_publisher->setText("Издатель установлен");
+        ui->label_publisher->setStyleSheet("QLabel { color : rgb(0,255 , 0) }");
+
     }
 }
 
@@ -130,6 +134,8 @@ void DialogAddBook::on_pushButton_add_bbk_clicked()
         add_new_item(QueryFactory::search_bbk(name_publisher),
                      QueryFactory::add_row_in_table_bbk(name_publisher),
                      "id_bbk");
+        ui->label_bbk->setText("ББК установлен");
+        ui->label_bbk->setStyleSheet("QLabel { color : rgb(0,255 , 0) }");
     }
 }
 
@@ -147,6 +153,8 @@ void DialogAddBook::on_pushButton_add_udc_clicked()
         add_new_item(QueryFactory::search_udc(name_publisher),
                      QueryFactory::add_row_in_table_udc(name_publisher),
                      "id_udc");
+        ui->label_udc->setText("УДК установлен");
+        ui->label_udc->setStyleSheet("QLabel { color : rgb(0,255 , 0) }");
     }
 }
 
@@ -169,6 +177,8 @@ void DialogAddBook::on_pushButton_add_ISBN_clicked()
                                      "Попытка добавить одинаковый ISBN");
             }else {
                 editableBook.isbn = ISBN;
+                ui->label_ISBN->setText("ISBN установлен");
+                ui->label_ISBN->setStyleSheet("QLabel { color : rgb(0,255 , 0) }");
             }
         }
 
@@ -186,7 +196,7 @@ void DialogAddBook::on_pushButton_addlistiem_author_clicked()
         listAuthor.append(author_add->getResultDialog());
         listModelAuthor->setStringList(listAuthor);
         ui->listView_author->setModel(listModelAuthor);
-        ui->label_author->setText("Жанр установлен");
+        ui->label_author->setText("Автор(ы) установлен");
         ui->label_author->setStyleSheet("QLabel { color : rgb(0, 255, 0) }");
         int id_author = p_connect->SearchSQL(
         QueryFactory::search_by_name_author(result),
@@ -207,7 +217,7 @@ void DialogAddBook::on_pushButton_addlistiem_genre_clicked()
         listGenre.append(result);
         listModelGenre->setStringList(listGenre);
         ui->listView_genre->setModel(listModelGenre);
-        ui->label_genre->setText("Жанр установлен");
+        ui->label_genre->setText("Жанр(ы) установлен");
         ui->label_genre->setStyleSheet("QLabel { color : rgb(0, 255, 0) }");
         int id_genre = p_connect->SearchSQL(
         QueryFactory::search_by_name_genre(result),
