@@ -20,7 +20,7 @@ public:
     void InitComboBox(DataBase *p_connect,
                       QComboBox *comboBox,
                       QString table_name,
-                      qint32 row);
+                      qint32 row, QSharedPointer<QSqlTableModel> &Table);
 
     void InitCompliter(DataBase *p_connect,
                        QComboBox *comboBox,
@@ -76,6 +76,19 @@ private:
     QCompleter *completer_udc;
     QCompleter *completer_bbk;
     QCompleter *completer_release_date_book;
+
+    bool completeWorkComboBox[6] = {false};
+
+    QSharedPointer<QSqlTableModel> p_Table_genre;
+    QSharedPointer<QSqlTableModel> p_Table_author;
+    QSharedPointer<QSqlTableModel> p_Table_ISBN;
+    QSharedPointer<QSqlTableModel> p_Table_publisher;
+    QSharedPointer<QSqlTableModel> p_Table_udc;
+    QSharedPointer<QSqlTableModel> p_Table_bbk;
+    QSharedPointer<QSqlTableModel> p_Table_release_date_book;
+
+    qint32 *p_integer = new qint32;
+
 
     DataBase *p_connect;
 

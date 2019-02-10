@@ -96,13 +96,14 @@ public:
 
 
     /*Работа с ComboBox'ами*/
-    bool setComboBox(QComboBox *ComboBoxView,QString TableName, qint32 ColumTable);
+    bool setComboBox(QComboBox *ComboBoxView, QString TableName, qint32 ColumTable, QSharedPointer<QSqlTableModel> &Table);
+
 
 
   signals:
 
   private:
-    QSqlDatabase objMDB;
+    QSqlDatabase objDatabase;
     QSqlQuery objQueryMDB;
     QSqlTableModel *objTable;
     QSqlQueryModel *objTableQuery;

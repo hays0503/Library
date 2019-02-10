@@ -14,10 +14,11 @@ DialogAddBook::DialogAddBook(QWidget *parent,
     this->setFocus();
     this->p_connect = p_connect;
 
-    p_connect->setComboBox(ui->comboBox_book_binding,
+
+/*    p_connect->setComboBox(ui->comboBox_book_binding,
                            "book_binding_type",
                            1);
-
+*/
     listModelGenre = new QStringListModel(this);
     listModelAuthor = new QStringListModel(this);
 

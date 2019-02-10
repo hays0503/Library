@@ -30,23 +30,15 @@ DialogSearch::~DialogSearch()
 void DialogSearch::InitComboBox(DataBase *p_connect,
                   QComboBox *comboBox,
                   QString table_name,
-                  qint32 row)
+                  qint32 row, QSharedPointer<QSqlTableModel> &Table)
 {
     ui->progressBar->setValue(20);
-    ui->progressBar->setValue(25);
-    ui->progressBar->setValue(30);
-    p_connect->setComboBox(comboBox,table_name,row);
+    p_connect->setComboBox(comboBox,table_name,row,Table);
     ui->progressBar->setValue(40);
-    ui->progressBar->setValue(35);
-    ui->progressBar->setValue(50);
-    comboBox->setMaxVisibleItems(4);
+    comboBox->setMaxVisibleItems(15);
     ui->progressBar->setValue(60);
-    ui->progressBar->setValue(65);
-    ui->progressBar->setValue(70);
     comboBox->setEditable(true);
     ui->progressBar->setValue(80);
-    ui->progressBar->setValue(85);
-    ui->progressBar->setValue(90);
 }
 
 void DialogSearch::InitCompliter(DataBase *p_connect,
@@ -237,34 +229,68 @@ void DialogSearch::on_pushButton_release_date_book_clicked()
 
 void DialogSearch::on_tabWidget_currentChanged(int index)
 {
-    qDebug()<<index;
     ui->progressBar->setValue(0);
     switch (index) {
-    case 1: InitComboBox(p_connect,
+    case 1: if(!completeWorkComboBox[0]){
+            InitComboBox(p_connect,
                          ui->comboBox_genre,
                          "genre",
-                         1); break;
-    case 2: InitComboBox(p_connect,
+                         1,p_Table_genre);}
+            else{
+            ui->comboBox_genre->setModel(p_Table_genre.data());
+            ui->comboBox_genre->setModelColumn(1);
+            }break;
+    case 2: if(!completeWorkComboBox[1]){
+            InitComboBox(p_connect,
                          ui->comboBox_author,
                          "author",
-                         1);break;
-    case 3: InitComboBox(p_connect,
+                         1,p_Table_author);}
+            else{
+            ui->comboBox_author->setModel(p_Table_author.data());
+            ui->comboBox_author->setModelColumn(1);
+            }
+        break;
+
+
+    case 3: if(!completeWorkComboBox[2]){
+            InitComboBox(p_connect,
                          ui->comboBox_publisher,
                          "publisher",
-                         1);break;
-    case 4: InitComboBox(p_connect,
+                         1,p_Table_publisher);}
+        else{
+        ui->comboBox_publisher->setModel(p_Table_publisher.data());
+        ui->comboBox_publisher->setModelColumn(1);
+        }break;
+    case 4: if(!completeWorkComboBox[3]){
+            InitComboBox(p_connect,
                          ui->comboBox_ISBN,
                          "books",
-                         8);break;
-    case 5: InitComboBox(p_connect,
+                         8,p_Table_ISBN);}
+        else{
+        ui->comboBox_ISBN->setModel(p_Table_ISBN.data());
+        ui->comboBox_ISBN->setModelColumn(1);
+        }break;
+    case 5: if(!completeWorkComboBox[4]){
+            InitComboBox(p_connect,
                          ui->comboBox_udc,
                          "udc",
-                         1);break;
-    case 6: InitComboBox(p_connect,
+                         1,p_Table_udc);}
+        else{
+        ui->comboBox_udc->setModel(p_Table_udc.data());
+        ui->comboBox_udc->setModelColumn(1);
+        }break;
+    case 6: if(!completeWorkComboBox[5]){
+            InitComboBox(p_connect,
                          ui->comboBox_bbk,
                          "bbk",
-                         1);break;
+                         1,p_Table_bbk);}
+        else{
+        ui->comboBox_bbk->setModel(p_Table_bbk.data());
+        ui->comboBox_bbk->setModelColumn(1);
+        }break;
     }
+    if(!completeWorkComboBox[index-1])
+        completeWorkComboBox[index-1] = true;
     ui->progressBar->setValue(100);
 
 }

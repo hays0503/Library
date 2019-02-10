@@ -4,6 +4,9 @@
 #include <iostream>
 #include <QTextStream>
 
+#include <QtConcurrent>
+#include <QFutureWatcher>
+#include <QFuture>
 
 DataBase::DataBase(QObject *parent) : QObject(parent)
 {
@@ -12,19 +15,19 @@ DataBase::DataBase(QObject *parent) : QObject(parent)
 
 bool DataBase::CreatConection(QString NameDataBase = "")
 {
-    objMDB = QSqlDatabase::addDatabase("QMYSQL");// Microsoft Access
-    objMDB.setDatabaseName(NameDataBase);
-       objMDB.setHostName("127.0.0.1");
-       objMDB.setPort(3306);
-       objMDB.setUserName("hays0503");
-       objMDB.setPassword("hays0503");
+    objDatabase = QSqlDatabase::addDatabase("QMYSQL");// Microsoft Access
+    objDatabase.setDatabaseName(NameDataBase);
+       objDatabase.setHostName("127.0.0.1");
+       objDatabase.setPort(3306);
+       objDatabase.setUserName("hays0503");
+       objDatabase.setPassword("hays0503");
 
-    if (objMDB.open()) {
+    if (objDatabase.open()) {
            qDebug("Success!");
-           qDebug()<<objMDB;
+           qDebug()<<objDatabase;
            return true;
     } else {
-        qDebug()<<objMDB.lastError().text();
+        qDebug()<<objDatabase.lastError().text();
         //qDebug()<<connectString;
         return false;
     }
@@ -33,12 +36,12 @@ bool DataBase::CreatConection(QString NameDataBase = "")
 
 QSqlDatabase *DataBase::getObjMDB()
 {
-    return &objMDB;
+    return &objDatabase;
 }
 
 void DataBase::setObjMDB(QSqlDatabase &value)
 {
-    objMDB = value;
+    objDatabase = value;
 }
 
 bool DataBase::setTable(QTableView *tableView,QString TableName)
@@ -135,21 +138,23 @@ int DataBase::SearchSQL(QString QuerySearch, QString indexOf)
 
 bool DataBase::setCompleter(QCompleter *completer, QString Query)
 {
-    qDebug()<<completer;
-    qDebug()<<objMDB;
-    objTableQuery = new QSqlQueryModel(this);
-    objTableQuery->setQuery(Query);
-//    objTableQuery->query();
-//    if (!objTable ->select())
-//    {
-//        qDebug()<<objTable->lastError().databaseText();
-//        qDebug()<<objTable ->lastError().driverText();
-//        return false;
-//    }else {
+    QFuture<QSqlQueryModel*> future = QtConcurrent::run(
+        [this,Query]()
+        {
+            objTableQuery = new QSqlQueryModel();
+            objTableQuery->setQuery(Query);
+            objTableQuery->query();
+            return objTableQuery;
+         });
+    QFutureWatcher<QSqlQueryModel*> *watcher = new QFutureWatcher<QSqlQueryModel*>(this);
+    connect(watcher,&QFutureWatcherBase::finished,[this, watcher,completer]()
+    {// Запускаем этот код в UI потоке, когда объект future завершит свою работу в рабочем потоке
+        completer->setModel(watcher->result());
+        watcher->deleteLater(); // Удалим ненужный watcher
+    });
+     watcher->setFuture(future); // Связываем watcher с feature. Это быстрая операция и не тормозит поток UI
 
-    completer->setModel(objTableQuery);
-//    return true;
-    //    }
+    return true;
 }
 
 void DataBase::DiapasonDate(QTableView *tableView,QString TableName, QDateEdit *Date1, QDateEdit *Date2)
@@ -184,21 +189,39 @@ void DataBase::setItemInTable(QStandardItemModel *table, qreal Item, int Row,qin
   table->setData(table->index(Row,Column),Item);
 }
 
-bool DataBase::setComboBox(QComboBox *ComboBoxView,QString TableName, qint32 ColumTable)
+bool DataBase::setComboBox(QComboBox *ComboBoxView,QString TableName, qint32 ColumTable, QSharedPointer<QSqlTableModel> &Table)
 {
-    qDebug()<<ComboBoxView;
-    objTable = new QSqlTableModel(this);
-    objTable ->setTable(TableName);
-    if (!objTable ->select())
-    {
-        qDebug()<<objTable->lastError().databaseText();
-        qDebug()<<objTable ->lastError().driverText();
-        return false;
-    }else {
-    ComboBoxView->setModel(objTable);
-    ComboBoxView->setModelColumn(ColumTable);
+
+    QFuture<QSharedPointer<QSqlTableModel>> future = QtConcurrent::run(
+        [this,TableName]()
+        {
+            objDatabase = QSqlDatabase::addDatabase("QMYSQL");
+            objDatabase.setDatabaseName("librarydb");
+            objDatabase.setHostName("127.0.0.1");
+            objDatabase.setPort(3306);
+            objDatabase.setUserName("hays0503");
+            objDatabase.setPassword("hays0503");
+            objDatabase.open();
+
+            QSharedPointer<QSqlTableModel> p_Table = QSharedPointer<QSqlTableModel>(new QSqlTableModel);
+            p_Table ->setTable(TableName);
+            p_Table ->select();
+            return p_Table;
+         });
+
+    QFutureWatcher<QSharedPointer<QSqlTableModel>> *watcher = new QFutureWatcher<QSharedPointer<QSqlTableModel>>(this);
+    connect(watcher,&QFutureWatcherBase::finished,[watcher,ComboBoxView,ColumTable,&Table]() mutable
+    {// Запускаем этот код в UI потоке, когда объект future завершит свою работу в рабочем потоке
+        QSharedPointer<QSqlTableModel> Tables = watcher->result();
+        Table = Tables;
+        ComboBoxView->setModel(Table.data());
+        ComboBoxView->setModelColumn(ColumTable);
+        ComboBoxView->showPopup();
+        //watcher->deleteLater(); // Удалим ненужный watcher
+    });
+    watcher->setFuture(future); // Связываем watcher с feature. Это быстрая операция и не тормозит поток UI
     return true;
-    }
+
 }
 
 
